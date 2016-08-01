@@ -1,3 +1,15 @@
-.settings
+# Configuration and build directories
+.settings/
+.sign/
+.build/
+
+# Configuration files needed by Tizen IDE
 .project
 .tproject
+.sdk_delta.info
+
+# Build file
+*.wgt
+
+# Dependencies directory
+lib/

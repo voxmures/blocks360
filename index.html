@@ -7,17 +7,34 @@
     <meta name="description" content="Tizen Wearable Web Basic Template" />
 
     <title>Tizen Wearable Web Basic Application</title>
-
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <script src="js/main.js"></script>
+	
+	<!-- Phaser injection -->
+	<script src="lib/phaser/build/phaser.min.js"></script>
+	
+	<!-- Game scripts -->
+	<script src="src/game.js"></script>
+	
+	<link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-    <div id="main" class="page">
-        <div class="contents">
-            <span id="content-text">Basic</span>
-        </div>
-    </div>
+    <div id="main"></div>
+    
+    <script>
+	    window.onload = function() {
+
+	        // add eventListener for tizenhwkey
+	        document.addEventListener('tizenhwkey', function(e) {
+	            if (e.keyName === "back") {
+	                try {
+	                    tizen.application.getCurrentApplication().exit();
+	                } catch (ignore) {}
+	            }
+	        });
+
+	        new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'main', Game);  
+	    };
+    </script>
 </body>
 
 </html>
