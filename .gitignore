@@ -8,7 +8,10 @@
 .tproject
 .sdk_delta.info
 
-# Build file
+# Build files
+.manifest.tmp
+author-signature.xml
+signature1.xml
 *.wgt
 
 # Dependencies directory
