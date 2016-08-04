@@ -22,8 +22,7 @@
     
     <script>
 	    window.onload = function() {
-
-	        // add eventListener for tizenhwkey
+	        // Add eventListener for tizenhwkey
 	        document.addEventListener('tizenhwkey', function(e) {
 	            if (e.keyName === "back") {
 	                try {
@@ -31,6 +30,18 @@
 	                } catch (ignore) {}
 	            }
 	        });
+
+	        // Add eventListener for rotatorydetent
+	        window.addEventListener('rotarydetent', function(ev) {
+				var direction = ev.detail.direction;
+				if (direction === 'CW') {
+					// TODO: Rotate blocks CW.
+					rotate(direction);
+				} else if (direction === 'CCW') {
+					// TODO: Rotate blocks CCW.
+					rotate(direction);
+				}
+			});
 
 	        new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'main', Game);  
 	    };

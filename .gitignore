@@ -7,11 +7,14 @@
 .project
 .tproject
 .sdk_delta.info
+.rds_delta
 
-# Build files
+# Build files (CLI)
 .manifest.tmp
 author-signature.xml
 signature1.xml
+
+# Widget file
 *.wgt
 
 # Dependencies directory
