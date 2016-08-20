@@ -10,13 +10,9 @@ var NUM_ROWS = 8,
 	NUM_COLS = 12;
 var board = [];
 
-var create = function() {
-	var game = this;
-	
-	game.stage.backgroundColor = '#FFFFFF';
+function generateBoard(game) {
 
 	var DIAM_GUI = 75;	// The diameter of the gui. 
-
 	var SIZE_ROW = (game.world.width/2 - DIAM_GUI)/NUM_ROWS,
 		SIZE_COL = game.math.PI2/NUM_COLS;
 
@@ -37,6 +33,13 @@ var create = function() {
 			};
 		}
 	}
+};
+
+var create = function() {
+	var game = this;
+	game.stage.backgroundColor = '#FFFFFF';
+
+	generateBoard(game);
 };
 
 function rotate(direction) {
