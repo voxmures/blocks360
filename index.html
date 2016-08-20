@@ -22,9 +22,10 @@
     
     <script>
 	    window.onload = function() {
+
 	        // Add eventListener for tizenhwkey
 	        document.addEventListener('tizenhwkey', function(e) {
-	            if (e.keyName === "back") {
+	            if (e.keyName === 'back') {
 	                try {
 	                    tizen.application.getCurrentApplication().exit();
 	                } catch (ignore) {}
@@ -42,6 +43,27 @@
 					rotate(direction);
 				}
 			});
+
+	    	/* ROTATORY BEZEL SIMULATION
+	    	 * Simulates the rotary bezel, only for debugging purposes.
+	    	 * If key 'j' (74) is pressed, then rotate CCW;
+	    	 * else if key 'k' (75) is pressed, then rotate CW
+	    	 */
+	    	(function() {
+		    	if (!window.navigator.userAgent.includes('Tizen')) {
+		    		console.warn('DEBUG:', 'Rotary bezel simulation active');
+		    		document.addEventListener('keydown', function(ev) {
+		    			switch(ev.keyCode) {
+		    				case 74:
+	    						rotate('CCW');
+	    						break;
+		    				case 75:
+		    					rotate('CW');
+		    					break;
+		    			}
+		    		});
+		    	}
+	    	})();
 
 	        new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'main', Game);  
 	    };
