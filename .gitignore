@@ -16,6 +16,3 @@ signature1.xml
 
 # Widget file
 *.wgt
-
-# Dependencies directory
-lib/
