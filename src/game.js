@@ -14,6 +14,11 @@ var DELAY_BLOCK_GEN = Phaser.Timer.SECOND * 2,
 var blocks = [],
 	board = [],
 	graphics = [];
+var score = 0,
+	scoreText = null;
+var MAXSCORE_KEY = 'com.indiejuice.tetris360.MAX_SCORE';
+var maxScore = 0,
+	maxScoreText = null;
 
 function generateBoard(game) {
 
@@ -36,10 +41,27 @@ function generateBoard(game) {
 	}
 };
 
+function initScore(game) {
+	maxScore = localStorage.getItem(MAXSCORE_KEY) || 0;
+
+	var text = game.add.text(game.world.centerX, game.world.centerY - 30, 'Score', { font: '18px Arial', fill: '#000000', align: 'center' });
+	text.anchor.set(0.5);
+
+	scoreText = game.add.text(game.world.centerX, game.world.centerY, '0', { font: '24px Arial', fill: '#000000', align: 'center' })
+	scoreText.anchor.set(0.5);
+
+	var text = game.add.text(game.world.centerX, game.world.centerY + 25, 'Max Score', { font: '12px Arial', fill: '#000000', align: 'center' });
+	text.anchor.set(0.5);
+
+	maxScoreText = game.add.text(game.world.centerX, game.world.centerY + 40, '' + maxScore, { font: '12px Arial', fill: '#000000', align: 'center' })
+	maxScoreText.anchor.set(0.5);
+};
+
 var create = function() {
 	var game = this;
 	game.stage.backgroundColor = '#FFFFFF';
 
+	initScore(game);
 	generateBoard(game);
 
 	game.time.events.loop(DELAY_BLOCK_GEN, throwBlock, game);
@@ -58,6 +80,12 @@ function generateBlock(game, col) {
 	return blocks[position];
 };
 
+function endGame() {
+	localStorage.setItem(MAXSCORE_KEY, maxScore);
+
+	// TODO: End game!
+};
+
 function throwBlock() {
 	var game = this;
 	
@@ -69,7 +97,7 @@ function throwBlock() {
 		game.time.events.add(DELAY_BLOCK_FALL, moveBlock, game, block);
 	}
 	else {
-		// TODO: Ends game (?)
+		endGame();
 	}
 };
 
@@ -102,7 +130,17 @@ function handleFilledRow(game, row) {
 		}
 	}
 
-	// TODO: Increment score!
+	updateScore();
+};
+
+function updateScore() {
+	score += NUM_COLS * 10;
+	scoreText.setText('' + score);
+
+	if (score > maxScore) {
+		maxScore = score;
+		maxScoreText.setText('' + maxScore);
+	}
 };
 
 function moveBlock(block) {
