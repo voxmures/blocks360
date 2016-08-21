@@ -82,6 +82,29 @@ function findBlockColumn(block) {
 	return column;
 };
 
+function isRowFilled(row) {
+	var count = board[row].reduce(function(sum, block) {
+		return sum + (block && !block.isFalling);
+	}, 0);
+	return (count == NUM_COLS);
+};
+
+function handleFilledRow(game, row) {
+	for (let i = 0; i < NUM_COLS; i++) {
+		blocks.splice(blocks.indexOf(board[row][i]), 1);
+		board[row][i] = null;
+
+		for (let j = row + 1; j < NUM_ROWS; j++) {
+			if (!board[j][i]) { break; }
+			board[j - 1][i] = board[j][i];
+			board[j][i] = null;
+			board[j - 1][i].row = j - 1;
+		}
+	}
+
+	// TODO: Increment score!
+};
+
 function moveBlock(block) {
 	var game = this;
 
@@ -101,6 +124,7 @@ function moveBlock(block) {
 	// The block has reached the last position in column.
 	if (row - 1 == 0) {
 		block.isFalling = false;
+		if (isRowFilled(0)) { handleFilledRow(game, 0); }
 	}
 	else {
 		game.time.events.add(DELAY_BLOCK_FALL, moveBlock, game, block);
