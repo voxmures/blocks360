@@ -9,8 +9,8 @@ var preload = function() {
 var DIAM_GUI = 50;	// The diameter of the gui. 
 var NUM_ROWS = 8,
 	NUM_COLS = 12;
-var DELAY_BLOCK_GEN = Phaser.Timer.SECOND * 5,
-	DELAY_BLOCK_FALL = Phaser.Timer.SECOND * 2;
+var DELAY_BLOCK_GEN = Phaser.Timer.SECOND * 2,
+	DELAY_BLOCK_FALL = Phaser.Timer.SECOND * 1;
 var board = [];
 
 function generateBoard(game) {
@@ -30,6 +30,7 @@ function generateBoard(game) {
 			board[i][j] = {
 				graphic: g,
 				isActive: false,
+				isFalling: false,
 				tint: 0xFFFFFF
 			};
 		}
@@ -65,16 +66,19 @@ function moveBlock(step, column, tint) {
 
 	if (step != 0) { eraseBlock(NUM_ROWS - step, column); }
 	paintBlock(NUM_ROWS - step - 1, column, tint);
+	board[NUM_ROWS - step - 1][column].isFalling = true; // Mark it as a falling block.
 
-	if (step + 1 == NUM_ROWS) { return; }
+	if (step + 1 == NUM_ROWS) { 
+		board[NUM_ROWS - step - 1][column].isFalling = false; 
+		return; 
+	}
 	step++; // Make a step, that is, keep falling.
 
-	// TODO: Prepare throw method (show to user where will the block be throw)
 	if (!board[NUM_ROWS - step - 1][column].isActive) { // Block can be thrown
 		game.time.events.add(DELAY_BLOCK_FALL, moveBlock, game, step, column, tint);
 	}
 	else {
-		// TODO: Ends game (?)
+		board[NUM_ROWS - step][column].isFalling = false; // Mark it as a still block.
 	}
 };
 
@@ -86,35 +90,64 @@ function paintBlock(row, col, tint) {
 };
 
 function eraseBlock(row, col) {
+	if (col == -1) { col = NUM_COLS - 1; }
 	var block = board[row][col];
 	block.isActive = false;
+	block.isFalling = false;
 	block.tint = 0xFFFFFF; 
 	block.graphic.tint = 0xFFFFFF;
 };
 
 function rotate(direction) {
-	if (direction !== 'CCW' && direction !== 'CW') { return console.error('Only "CCW" and "CW" values are allowed'); }
-	for (let i = 0; i < NUM_ROWS; i++) {
-		var row = board[i];
+	if (direction === 'CW') {
+		for (let i = 0; i < NUM_ROWS; i++) {
+			var block = board[i][NUM_COLS - 1];
+			var oldTint = block.tint,
+				allowMove = (block.isActive && !block.isFalling),
+				wasPainted = false;
+			for (let j = NUM_COLS - 1; j >= 0; j--) {
+				if (j == 0) {
+					if (allowMove) {
+						if (!wasPainted) { eraseBlock(i, -1); }
+						paintBlock(i, j, oldTint);
+					}
+					continue;
+				}
 
-		var oldTint = row.slice(-1)[0].tint;
-		for (let j = 0; j < NUM_COLS; j++) {
-			
-			var tint;
-			if (direction === 'CW') {
-				tint = oldTint;
-				oldTint = row[j].tint;
+				var nextBlock = board[i][j - 1];
+				if (nextBlock.isActive && !nextBlock.isFalling) {
+					if (j == NUM_COLS - 1) { wasPainted = true;}
+					paintBlock(i, j, nextBlock.tint);
+					eraseBlock(i, j - 1);
+				}
 			}
-			else if (direction === 'CCW') {
-				if (j == 0) { oldTint = row[j].tint; }
-				
-				if (j == row.length - 1) { tint = oldTint; }
-				else { tint = row[j+1].tint; }		
-			}
-
-			row[j].tint = tint; row[j].graphic.tint = tint;
 		}
 	}
+	else if (direction === 'CCW') {
+		for (let i = 0; i < NUM_ROWS; i++) {
+			var block = board[i][0];
+			var oldTint = block.tint,
+				allowMove = (block.isActive && !block.isFalling),
+				wasPainted = false;
+			for (let j = 0; j < NUM_COLS; j++) {
+				if (j == NUM_COLS - 1) {
+					if (allowMove) {
+						if (!wasPainted) { eraseBlock(i, 0); }
+						paintBlock(i, j, oldTint);
+					}
+					continue;
+				}
+
+				var nextBlock = board[i][j + 1];
+				if (nextBlock.isActive && !nextBlock.isFalling) {
+					if (j == 0) { wasPainted = true;}
+					paintBlock(i, j, nextBlock.tint);
+					eraseBlock(i, j + 1);
+				}
+			}
+		}
+	}
+	else { return console.error('Only "CCW" and "CW" values are allowed'); }
 };
 
 var update = function() {
