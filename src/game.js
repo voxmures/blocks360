@@ -6,7 +6,7 @@ var preload = function() {
 	
 };
 
-var DIAM_GUI = 50;	// The diameter of the gui. 
+var RADIUS_GUI = 50;	// The radius of the gui. 
 var NUM_ROWS = 8,
 	NUM_COLS = 12;
 var DELAY_BLOCK_GEN = Phaser.Timer.SECOND * 2,
@@ -22,18 +22,24 @@ var maxScore = 0,
 
 function generateBoard(game) {
 
-	var SIZE_ROW = (game.world.width/2 - DIAM_GUI)/NUM_ROWS,
-		SIZE_COL = game.math.PI2/NUM_COLS;
+	var SIZE_COL = game.math.PI2/NUM_COLS;
+	var availableSpace = game.world.width/2 - RADIUS_GUI;
 
 	// Create the structure
+	var remainingSpace = availableSpace;
 	for (let i = 0; i < NUM_ROWS; i++) {
+		// Calculate growing row size
+		var modifier = Math.pow((NUM_ROWS - i - 1)/NUM_ROWS, 2);
+		var SIZE_ROW = remainingSpace - (availableSpace * modifier);
+		remainingSpace -= SIZE_ROW;
+
 		board[i] = [];
 		graphics[i] = [];
 		for (let j = 0; j < NUM_COLS; j++) {
 
 			var g = game.add.graphics(game.world.centerX, game.world.centerY);
 			g.lineStyle(SIZE_ROW, 0xFFFFFF, 1);
-			g.arc(0, 0, game.world.width/2 - (i*SIZE_ROW + (SIZE_ROW/2)), SIZE_COL * j, SIZE_COL * (j + 1), false);
+			g.arc(0, 0, RADIUS_GUI + (remainingSpace + (SIZE_ROW/2)), SIZE_COL * j, SIZE_COL * (j + 1), false);
 
 			board[i][j] = null;
 			graphics[i][j] = g;
