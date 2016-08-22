@@ -25,13 +25,24 @@ function generateBoard(game) {
 	var SIZE_COL = game.math.PI2/NUM_COLS;
 	var availableSpace = game.world.width/2 - RADIUS_GUI;
 
+	var grid = {
+		circles: [],
+		lines: []
+	};
+
+	grid.circles.push(game.world.width);
+
 	// Create the structure
+	var firstRun = true;
 	var remainingSpace = availableSpace;
 	for (let i = 0; i < NUM_ROWS; i++) {
 		// Calculate growing row size
 		var modifier = Math.pow((NUM_ROWS - i - 1)/NUM_ROWS, 2);
 		var SIZE_ROW = remainingSpace - (availableSpace * modifier);
 		remainingSpace -= SIZE_ROW;
+
+		// Calculate circles for grid
+		grid.circles.push((RADIUS_GUI + remainingSpace) * 2);
 
 		board[i] = [];
 		graphics[i] = [];
@@ -41,9 +52,43 @@ function generateBoard(game) {
 			g.lineStyle(SIZE_ROW, 0xFFFFFF, 1);
 			g.arc(0, 0, RADIUS_GUI + (remainingSpace + (SIZE_ROW/2)), SIZE_COL * j, SIZE_COL * (j + 1), false);
 
+			// Calculate lines for grid
+			if (firstRun) {
+				grid.lines.push({
+					from: [
+						RADIUS_GUI * Math.cos(SIZE_COL * (j + 1)),
+						RADIUS_GUI * Math.sin(SIZE_COL * (j + 1))
+					],
+					to: [
+						(game.world.width / 2) * Math.cos(SIZE_COL * (j + 1)),
+						(game.world.width / 2) * Math.sin(SIZE_COL * (j + 1))
+					]
+				});
+			}
+
 			board[i][j] = null;
 			graphics[i][j] = g;
 		}
+		firstRun = false;
+	}
+
+	return grid;
+};
+
+function paintGrid(game, gridMeasures) {
+	var grid = game.add.graphics(game.world.centerX, game.world.centerY);
+	grid.lineStyle(1, 0xCCCCCC, 1);
+	
+	// Paint circles
+	for (let index in gridMeasures.circles) {
+		grid.drawCircle(0, 0, gridMeasures.circles[index])
+	}
+
+	// Paint lines
+	for (let index in gridMeasures.lines) {
+		var line = gridMeasures.lines[index];
+		grid.moveTo(line.from[0], line.from[1]);
+		grid.lineTo(line.to[0], line.to[1]);
 	}
 };
 
@@ -68,7 +113,8 @@ var create = function() {
 	game.stage.backgroundColor = '#FFFFFF';
 
 	initScore(game);
-	generateBoard(game);
+	diam = generateBoard(game);
+	paintGrid(game, diam);
 
 	game.time.events.loop(DELAY_BLOCK_GEN, throwBlock, game);
 };
