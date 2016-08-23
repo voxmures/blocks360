@@ -11,7 +11,7 @@ Given that the application is designed to run in a Samsung Gear S2, you will nee
 We will use Tizen SDK CLI to build and install the game. With the command line, go to the directory where you cloned the project and execute these few instructions:
 
     > tizen package -t wgt -s <security profile name>
-    > tizen install -t emulator-26101 -n Tetris360.wgt
+    > tizen install -t emulator-26101 -n Blocks360.wgt
 
 Certificate and security profile are needed to execute successfully the above commands. Both can be generated via Tizen SDK CLI. To get more information about Tizen SDK CLI, refer to this [web](https://developer.tizen.org/development/tools/native-tools/command-line-interface).
 
@@ -21,7 +21,7 @@ The emulator should be running, of course.
 
 Run the application via emulator or via command line:
 
-    > tizen run -t emulator-26101 -p 0gOGlkq5xv
+    > tizen run -t emulator-26101 -p KVUhObN4mO
 
 You can run the application on any modern web browser serving the index file with any http server you like. I use [http-server module](https://www.npmjs.com/package/http-server), for example. This method allows a faster debugging.
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/Tetris360" version="1.0.0" viewmodes="maximized">
-    <tizen:application id="0gOGlkq5xv.Tetris360" package="0gOGlkq5xv" required_version="2.3.1"/>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://www.indiejuice.com/Blocks360" version="0.1.0" viewmodes="maximized">
+    <tizen:application id="KVUhObN4mO.Blocks360" package="KVUhObN4mO" required_version="2.3.1"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.all"/>
     <icon src="icon.png"/>
-    <name>Tetris360</name>
+    <name>Blocks360</name>
     <tizen:profile name="wearable"/>
+    <tizen:setting background-support="disable" encryption="disable" hwkey-event="enable"/>
 </widget>
