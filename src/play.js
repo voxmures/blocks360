@@ -2,10 +2,6 @@ var playState = function(game) {
 	
 };
 
-var preload = function() {
-	
-};
-
 var RADIUS_GUI = 50;	// The radius of the gui. 
 var NUM_ROWS = 8,
 	NUM_COLS = 12;
@@ -106,17 +102,6 @@ function initScore(game) {
 
 	maxScoreText = game.add.text(game.world.centerX, game.world.centerY + 40, '' + maxScore, { font: '12px Arial', fill: '#000000', align: 'center' })
 	maxScoreText.anchor.set(0.5);
-};
-
-var create = function() {
-	var game = this;
-	game.stage.backgroundColor = '#FFFFFF';
-
-	initScore(game);
-	diam = generateBoard(game);
-	paintGrid(game, diam);
-
-	game.time.events.loop(DELAY_BLOCK_GEN, throwBlock, game);
 };
 
 function generateBlock(game, col) {
@@ -259,6 +244,21 @@ function rotate(direction) {
 	}
 };
 
+var create = function() {
+	var game = this;
+	game.stage.backgroundColor = '#FFFFFF';
+	
+	var music = game.add.audio('bgmusic');
+	music.loop = true;
+	music.play();
+
+	initScore(game);
+	diam = generateBoard(game);
+	paintGrid(game, diam);
+
+	game.time.events.loop(DELAY_BLOCK_GEN, throwBlock, game);
+};
+
 var update = function() {
 	for (var i = 0; i < NUM_ROWS; i++) {
 		for (var j = 0; j < NUM_COLS; j++) {
@@ -268,7 +268,6 @@ var update = function() {
 };
 
 playState.prototype = {
-	preload: preload,
 	create: create,
 	update: update
 };
