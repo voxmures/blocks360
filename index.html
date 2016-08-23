@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="Tizen Wearable Web Basic Template" />
 
-    <title>Tizen Wearable Web Basic Application</title>
+    <title>Blocks360 Game</title>
 	
 	<!-- Phaser injection -->
 	<script src="lib/phaser.min.js"></script>
 	
 	<!-- Game scripts -->
+	<script src="src/menu.js"></script>
+	<script src="src/play.js"></script>
+	<script src="src/gameover.js"></script>
 	<script src="src/game.js"></script>
 	
 	<link rel="stylesheet" href="css/style.css" />
@@ -43,23 +46,21 @@
 	    	 * If key 'j' (74) is pressed, then rotate CCW;
 	    	 * else if key 'k' (75) is pressed, then rotate CW
 	    	 */
-	    	// (function() {
-		    // 	if (!window.navigator.userAgent.includes('Tizen')) {
-		    // 		console.warn('DEBUG:', 'Rotary bezel simulation active');
-		    // 		document.addEventListener('keydown', function(ev) {
-		    // 			switch(ev.keyCode) {
-		    // 				case 74:
-	    	// 					rotate('CCW');
-	    	// 					break;
-		    // 				case 75:
-		    // 					rotate('CW');
-		    // 					break;
-		    // 			}
-		    // 		});
-		    // 	}
-	    	// })();
-
-	        new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'main', Game);  
+	    	(function() {
+		    	if (!window.navigator.userAgent.includes('Tizen')) {
+		    		console.warn('DEBUG:', 'Rotary bezel simulation active');
+		    		document.addEventListener('keydown', function(ev) {
+		    			switch(ev.keyCode) {
+		    				case 74:
+	    						rotate('CCW');
+	    						break;
+		    				case 75:
+		    					rotate('CW');
+		    					break;
+		    			}
+		    		});
+		    	}
+	    	})();
 	    };
     </script>
 </body>
