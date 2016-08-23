@@ -5,7 +5,9 @@ var playState = function(game) {
 var RADIUS_GUI = 50;	// The radius of the gui. 
 var NUM_ROWS = 8,
 	NUM_COLS = 12;
+var SIZE_COL;
 var DELAY_BLOCK_GEN = Phaser.Timer.SECOND * 2,
+	DELAY_BLOCK_ALERT = Phaser.Timer.SECOND * 1.5,
 	DELAY_BLOCK_FALL = Phaser.Timer.SECOND * 1;
 var blocks = [],
 	board = [],
@@ -18,7 +20,7 @@ var maxScore = 0,
 
 function generateBoard(game) {
 
-	var SIZE_COL = game.math.PI2/NUM_COLS;
+	SIZE_COL = game.math.PI2/NUM_COLS;
 	var availableSpace = game.world.width/2 - RADIUS_GUI;
 
 	var grid = {
@@ -91,16 +93,16 @@ function paintGrid(game, gridMeasures) {
 function initScore(game) {
 	maxScore = localStorage.getItem(MAXSCORE_KEY) || 0;
 
-	var scoreTitleText = game.add.text(game.world.centerX, game.world.centerY - 30, 'Score', { font: '18px Arial', fill: '#000000', align: 'center' });
+	var scoreTitleText = game.add.text(game.world.centerX, game.world.centerY - 20, 'Score', { font: '18px Arial', fill: '#000000', align: 'center' });
 	scoreTitleText.anchor.set(0.5);
 
 	scoreText = game.add.text(game.world.centerX, game.world.centerY, '0', { font: '24px Arial', fill: '#000000', align: 'center' })
 	scoreText.anchor.set(0.5);
 
-	var maxScoreTitleText = game.add.text(game.world.centerX, game.world.centerY + 25, 'Max Score', { font: '12px Arial', fill: '#000000', align: 'center' });
+	var maxScoreTitleText = game.add.text(game.world.centerX, game.world.centerY + 18, 'Max Score', { font: '10px Arial', fill: '#000000', align: 'center' });
 	maxScoreTitleText.anchor.set(0.5);
 
-	maxScoreText = game.add.text(game.world.centerX, game.world.centerY + 40, '' + maxScore, { font: '12px Arial', fill: '#000000', align: 'center' })
+	maxScoreText = game.add.text(game.world.centerX, game.world.centerY + 30, '' + maxScore, { font: '12px Arial', fill: '#000000', align: 'center' })
 	maxScoreText.anchor.set(0.5);
 };
 
@@ -123,13 +125,26 @@ function endGame(game) {
 	game.state.start('gameover', true, false, score);
 };
 
-function throwBlock() {
+function prepareThrow() {	
 	var game = this;
-	
-	var column = game.rnd.integerInRange(0, NUM_COLS - 1); // Set the column where the block will fall.
 
-	// TODO: Prepare throw method (show to user where will the block be throw)
-	if (!board[NUM_ROWS - 1][column] != null) { // Block can be thrown
+	var column = game.rnd.integerInRange(0, NUM_COLS - 1); // Set the column where the block will fall.
+	var alertSize = 5;
+
+	var g = game.add.graphics(game.world.centerX, game.world.centerY);
+	g.lineStyle(alertSize, 0xFF0000, 1);
+	g.arc(0, 0, RADIUS_GUI - (alertSize / 2), SIZE_COL * column, SIZE_COL * (column + 1), false);
+
+	game.time.events.add(DELAY_BLOCK_ALERT, throwBlock, game, column, g);
+};
+
+function throwBlock(column, g) {
+	var game = this;
+
+	// Destroy the alert
+	g.destroy();
+
+	if (board[NUM_ROWS - 1][column] == null) { // Block can be thrown
 		var block = generateBlock(game, column);
 		game.time.events.add(DELAY_BLOCK_FALL, moveBlock, game, block);
 	}
@@ -256,7 +271,7 @@ var create = function() {
 	diam = generateBoard(game);
 	paintGrid(game, diam);
 
-	game.time.events.loop(DELAY_BLOCK_GEN, throwBlock, game);
+	game.time.events.loop(DELAY_BLOCK_GEN, prepareThrow, game);
 };
 
 var update = function() {
