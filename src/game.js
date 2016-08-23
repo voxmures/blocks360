@@ -35,7 +35,7 @@ function generateBoard(game) {
 	// Create the structure
 	var firstRun = true;
 	var remainingSpace = availableSpace;
-	for (let i = 0; i < NUM_ROWS; i++) {
+	for (var i = 0; i < NUM_ROWS; i++) {
 		// Calculate growing row size
 		var modifier = Math.pow((NUM_ROWS - i - 1)/NUM_ROWS, 2);
 		var SIZE_ROW = remainingSpace - (availableSpace * modifier);
@@ -46,7 +46,7 @@ function generateBoard(game) {
 
 		board[i] = [];
 		graphics[i] = [];
-		for (let j = 0; j < NUM_COLS; j++) {
+		for (var j = 0; j < NUM_COLS; j++) {
 
 			var g = game.add.graphics(game.world.centerX, game.world.centerY);
 			g.lineStyle(SIZE_ROW, 0xFFFFFF, 1);
@@ -80,12 +80,12 @@ function paintGrid(game, gridMeasures) {
 	grid.lineStyle(1, 0xCCCCCC, 1);
 	
 	// Paint circles
-	for (let index in gridMeasures.circles) {
+	for (var index in gridMeasures.circles) {
 		grid.drawCircle(0, 0, gridMeasures.circles[index])
 	}
 
 	// Paint lines
-	for (let index in gridMeasures.lines) {
+	for (var index in gridMeasures.lines) {
 		var line = gridMeasures.lines[index];
 		grid.moveTo(line.from[0], line.from[1]);
 		grid.lineTo(line.to[0], line.to[1]);
@@ -155,7 +155,7 @@ function throwBlock() {
 
 function findBlockColumn(block) {
 	var column;
-	for (let i = 0; i < NUM_ROWS; i++) {
+	for (var i = 0; i < NUM_ROWS; i++) {
 		column = board[i].indexOf(block);
 		if (column > -1) break;
 	}
@@ -170,11 +170,11 @@ function isRowFilled(row) {
 };
 
 function handleFilledRow(game, row) {
-	for (let i = 0; i < NUM_COLS; i++) {
+	for (var i = 0; i < NUM_COLS; i++) {
 		blocks.splice(blocks.indexOf(board[row][i]), 1);
 		board[row][i] = null;
 
-		for (let j = row + 1; j < NUM_ROWS; j++) {
+		for (var j = row + 1; j < NUM_ROWS; j++) {
 			if (!board[j][i]) { break; }
 			board[j - 1][i] = board[j][i];
 			board[j][i] = null;
@@ -227,7 +227,7 @@ function rotate(direction) {
 		return console.error('Only "CCW" and "CW" values are allowed'); 
 	}
 
-	for (let i = 0; i < NUM_ROWS; i++) {
+	for (var i = 0; i < NUM_ROWS; i++) {
 		var fixedBlocks = board[i].map(function(block) {
 			return (block && block.isFalling ? null : block);
 		});
@@ -239,12 +239,12 @@ function rotate(direction) {
 		else if (direction === 'CCW') { fixedBlocks.push(fixedBlocks.shift()); }
 
 		var resultRow = [];
-		for (let j = 0; j < fixedBlocks.length; j++) {
+		for (var j = 0; j < fixedBlocks.length; j++) {
 			if (fallingBlocks[j] && fixedBlocks[j] ) { // Collision detected!
 				// WARNING: Possible collision between falling blocks in near future.
 				if (direction === 'CW') { 
 					if (j < NUM_COLS - 1) { fallingBlocks[j + 1] = fallingBlocks[j]; }
-					else { resultsRow[0] = fallingBlocks[j]; }
+					else { resultRow[0] = fallingBlocks[j]; }
 				}
 				else { 
 					if (j > 0) { resultRow[j - 1] = fallingBlocks[j]; } 
@@ -260,8 +260,8 @@ function rotate(direction) {
 };
 
 var update = function() {
-	for (let i = 0; i < NUM_ROWS; i++) {
-		for (let j = 0; j < NUM_COLS; j++) {
+	for (var i = 0; i < NUM_ROWS; i++) {
+		for (var j = 0; j < NUM_COLS; j++) {
 			graphics[i][j].tint = (board[i][j] != null ? board[i][j].tint : 0xFFFFFF);
 		}
 	}

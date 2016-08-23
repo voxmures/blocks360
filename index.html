@@ -35,13 +35,7 @@
 	        // Add eventListener for rotatorydetent
 	        window.addEventListener('rotarydetent', function(ev) {
 				var direction = ev.detail.direction;
-				if (direction === 'CW') {
-					// TODO: Rotate blocks CW.
-					rotate(direction);
-				} else if (direction === 'CCW') {
-					// TODO: Rotate blocks CCW.
-					rotate(direction);
-				}
+				rotate(direction);
 			});
 
 	    	/* ROTATORY BEZEL SIMULATION
@@ -49,21 +43,21 @@
 	    	 * If key 'j' (74) is pressed, then rotate CCW;
 	    	 * else if key 'k' (75) is pressed, then rotate CW
 	    	 */
-	    	(function() {
-		    	if (!window.navigator.userAgent.includes('Tizen')) {
-		    		console.warn('DEBUG:', 'Rotary bezel simulation active');
-		    		document.addEventListener('keydown', function(ev) {
-		    			switch(ev.keyCode) {
-		    				case 74:
-	    						rotate('CCW');
-	    						break;
-		    				case 75:
-		    					rotate('CW');
-		    					break;
-		    			}
-		    		});
-		    	}
-	    	})();
+	    	// (function() {
+		    // 	if (!window.navigator.userAgent.includes('Tizen')) {
+		    // 		console.warn('DEBUG:', 'Rotary bezel simulation active');
+		    // 		document.addEventListener('keydown', function(ev) {
+		    // 			switch(ev.keyCode) {
+		    // 				case 74:
+	    	// 					rotate('CCW');
+	    	// 					break;
+		    // 				case 75:
+		    // 					rotate('CW');
+		    // 					break;
+		    // 			}
+		    // 		});
+		    // 	}
+	    	// })();
 
 	        new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'main', Game);  
 	    };
