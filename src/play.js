@@ -17,6 +17,7 @@ var score = 0,
 var MAXSCORE_KEY = 'com.indiejuice.tetris360.MAX_SCORE';
 var maxScore = 0,
 	maxScoreText = null;
+var music = null;
 
 function generateBoard(game) {
 
@@ -122,6 +123,8 @@ function generateBlock(game, col) {
 function endGame(game) {
 	localStorage.setItem(MAXSCORE_KEY, maxScore);
 
+	music.stop();
+	
 	game.state.start('gameover', true, false, score);
 };
 
@@ -263,7 +266,7 @@ var create = function() {
 	var game = this;
 	game.stage.backgroundColor = '#FFFFFF';
 	
-	var music = game.add.audio('bgmusic');
+	music = game.add.audio('bgmusic');
 	music.loop = true;
 	music.play();
 
