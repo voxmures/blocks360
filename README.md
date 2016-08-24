@@ -4,7 +4,7 @@ Tetris-like game prototype for Samsung Gear S2. Entry of "Dispositivos por apps 
 
 ## Description & Images
 
-<img src="/icon.png" align="left">
+<img src="/icon.png" align="left" width="180">
 
 Blocks360 or simply “blocks” is a puzzle game meant to be played in a Samsung Gear S2 and take advantage of its rotating bezel. 
 
@@ -12,7 +12,7 @@ Your objective in the game will be get the maximum score filling the outermost r
 
 Enjoy playing Blocks360!
 
-![Screenshot 1](/../screenshots/screen_1.png?raw=true "Screenshot 1") ![Screenshot 2](/../screenshots/screen_2.png?raw=true "Screenshot 2") ![Screenshot 3](/../screenshots/screen_3.png?raw=true "Screenshot 3") ![Screenshot 4](/../screenshots/screen_4.png?raw=true "Screenshot 4")
+![Screenshot 1](/../screenshots/screenshots/screen_1.png?raw=true "Screenshot 1") ![Screenshot 2](/../screenshots/screenshots/screen_2.png?raw=true "Screenshot 2") ![Screenshot 3](/../screenshots/screenshots/screen_3.png?raw=true "Screenshot 3") ![Screenshot 4](/../screenshots/screenshots/screen_4.png?raw=true "Screenshot 4")
 
 ## Requirements
 
