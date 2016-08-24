@@ -12,11 +12,9 @@ var DELAY_BLOCK_GEN = Phaser.Timer.SECOND * 2,
 var blocks = [],
 	board = [],
 	graphics = [];
-var score = 0,
-	scoreText = null;
+var score, scoreText = null;
 var MAXSCORE_KEY = 'com.indiejuice.tetris360.MAX_SCORE';
-var maxScore = 0,
-	maxScoreText = null;
+var maxScore, maxScoreText = null;
 var music = null;
 
 function generateBoard(game) {
@@ -92,6 +90,7 @@ function paintGrid(game, gridMeasures) {
 };
 
 function initScore(game) {
+	score = 0;
 	maxScore = localStorage.getItem(MAXSCORE_KEY) || 0;
 
 	var scoreTitleText = game.add.text(game.world.centerX, game.world.centerY - 20, 'Score', { font: '18px Arial', fill: '#000000', align: 'center' });
@@ -124,7 +123,7 @@ function endGame(game) {
 	localStorage.setItem(MAXSCORE_KEY, maxScore);
 
 	music.stop();
-	
+
 	game.state.start('gameover', true, false, score);
 };
 
