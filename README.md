@@ -2,6 +2,23 @@
 
 Tetris-like game prototype for Samsung Gear S2. Entry of "Dispositivos por apps 2016" challenge.
 
+## Description
+
+<img src="/icon.png" align="left" width="180" >
+
+Blocks360 or simply “blocks” is a puzzle game meant to be played in a Samsung Gear S2 and takes advantage of its rotating bezel. 
+
+Your objective in the game will be get the maximum score filling the outermost row of the board. To achieve it you will be able to control the board by rotating the powerful bezel of your smartwatch. But be careful, the blocks can’t reach the top of the board, or you will lose!
+
+Enjoy playing Blocks360!
+
+## Screenshots
+
+<img src="/../screenshots/screenshots/screen_1.png?raw=true" width="210" > 
+<img src="/../screenshots/screenshots/screen_2.png?raw=true" width="210" > 
+<img src="/../screenshots/screenshots/screen_3.png?raw=true" width="210" > 
+<img src="/../screenshots/screenshots/screen_4.png?raw=true" width="210" >
+
 ## Requirements
 
 Given that the application is designed to run in a Samsung Gear S2, you will need to install the [Tizen SDK](https://developer.tizen.org/development/tools/download) in order to deploy it in an emulator or in the physical smartwatch. However, the application itself can be executed in a modern web navigator, as it just depends on [Phaser](http://phaser.io/) framework.
